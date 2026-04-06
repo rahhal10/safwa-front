@@ -1,0 +1,13 @@
+/* Global reset — all theming is handled in App.css */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}

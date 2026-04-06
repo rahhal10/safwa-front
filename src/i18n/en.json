@@ -1,0 +1,135 @@
+{
+  "appTitle": "Zakat Calculator",
+  "bankName": "Safwa Islamic Bank",
+  "steps": {
+    "step1": "Personal Information",
+    "step2": "Asset Categories",
+    "step3": "Asset Details",
+    "step4": "Liabilities",
+    "step5": "Zakat Summary"
+  },
+  "buttons": {
+    "next": "Next",
+    "back": "Back",
+    "calculate": "Calculate Zakat"
+  },
+  "personalInfo": {
+    "title": "Personal Information",
+    "subtitle": "Please fill in your personal details to proceed.",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "nationalId": "National ID",
+    "accountNumber": "Account Number",
+    "phoneNumber": "Phone Number",
+    "email": "Email",
+    "hawlConfirm": "I confirm that one lunar year (hawl) has passed on my wealth."
+  },
+  "assetSelection": {
+    "title": "Select Asset Categories",
+    "subtitle": "Select all zakatable assets you own.",
+    "cash": "Cash & Bank Balances",
+    "gold": "Gold",
+    "silver": "Silver",
+    "stocks": "Stocks",
+    "investmentFunds": "Investment Funds",
+    "businessAssets": "Business Assets",
+    "moneyOwed": "Money Owed To Me"
+  },
+  "assetDetails": {
+    "title": "Asset Details",
+    "subtitle": "Enter the current value for each of your selected assets.",
+    "cashSection": "Cash & Bank Balances",
+    "goldSection": "Gold",
+    "silverSection": "Silver",
+    "stocksSection": "Stocks",
+    "investmentFundsSection": "Investment Funds",
+    "businessAssetsSection": "Business Assets",
+    "moneyOwedSection": "Money Owed To Me",
+    "cashInHand": "Cash in hand",
+    "savingsBalance": "Savings account balance",
+    "checkingBalance": "Checking account balance",
+    "goldWeight": "Gold weight (grams)",
+    "silverWeight": "Silver weight (grams)",
+    "stocksValue": "Total value of stocks",
+    "fundsValue": "Total value of funds",
+    "businessInventory": "Business inventory value",
+    "businessCash": "Business cash",
+    "amountOwed": "Amount owed by others",
+    "currency": "JOD"
+  },
+  "liabilities": {
+    "title": "Liabilities",
+    "subtitle": "Enter all outstanding financial obligations.",
+    "personalLoans": "Personal loans",
+    "creditCard": "Credit card balances",
+    "mortgagePayments": "Mortgage payments due this year",
+    "carLoan": "Car loan payments due this year",
+    "otherDebts": "Other debts",
+    "currency": "JOD"
+  },
+  "summary": {
+    "title": "Zakat Summary",
+    "subtitle": "Review your Zakat calculation summary below.",
+    "summarySection": "Summary",
+    "totalAssets": "Total Assets",
+    "totalLiabilities": "Total Liabilities",
+    "netWealth": "Net Zakatable Wealth",
+    "nisabSection": "Nisab Indicator",
+    "nisabMessage": "Your wealth is above the Nisab threshold.",
+    "zakatSection": "Zakat Due",
+    "zakatDue": "Zakat Due",
+    "placeholder": "---",
+    "currency": "JOD"
+  },
+  "backToBank": "Back to Safwa Bank",
+  "language": {
+    "en": "English",
+    "ar": "العربية"
+  },
+  "validation": {
+    "firstNameRequired": "First name must be at least 2 characters.",
+    "lastNameRequired": "Last name must be at least 2 characters.",
+    "nationalIdInvalid": "National ID must be exactly 10 digits.",
+    "accountNumberRequired": "Account number is required.",
+    "phoneInvalid": "Enter a valid Jordanian number (07XXXXXXXX).",
+    "emailInvalid": "Enter a valid email address.",
+    "hawlRequired": "You must confirm that the full lunar year (hawl) has passed.",
+    "assetSelectionRequired": "Please select at least one asset category."
+  },
+  "prices": {
+    "liveTitle": "Live Metal Prices",
+    "goldLabel": "Gold",
+    "silverLabel": "Silver",
+    "perGram": "JOD / gram",
+    "lastUpdated": "Updated",
+    "loading": "Fetching live prices…",
+    "error": "Could not load live prices. Results may not be accurate.",
+    "usingCache": "Using cached prices.",
+    "usingFallbackRate": "Using estimated exchange rate (0.709 USD/JOD).",
+    "estimatedValue": "Est. value"
+  },
+  "nisabSelector": {
+    "title": "Nisab Standard",
+    "description": "Zakat becomes obligatory when your net wealth equals or exceeds the value of 85 grams of pure gold (24K) or 595 grams of silver.",
+    "silverLabel": "Silver Standard (Recommended)",
+    "silverDesc": "595 grams of silver",
+    "goldLabel": "Gold Standard",
+    "goldDesc": "85 grams of pure gold (24K)",
+    "selectedSilver": "Silver",
+    "selectedGold": "Gold"
+  },
+  "results": {
+    "totalAssets": "Total Assets",
+    "totalLiabilities": "Total Liabilities",
+    "netWealth": "Net Zakatable Wealth",
+    "nisabThreshold": "Nisab Threshold",
+    "nisabStandard": "Nisab Standard",
+    "zakatDue": "Zakat Due (2.5%)",
+    "zakatRequired": "Your wealth exceeds the Nisab threshold. Zakat is obligatory.",
+    "zakatNotRequired": "Your wealth is below the Nisab threshold. No zakat is required.",
+    "goldPriceUsed": "Gold price used",
+    "silverPriceUsed": "Silver price used",
+    "currency": "JOD",
+    "noResult": "Click \"Calculate Zakat\" to see your results."
+  }
+}

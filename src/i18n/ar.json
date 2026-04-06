@@ -1,0 +1,135 @@
+{
+  "appTitle": "حاسبة الزكاة",
+  "bankName": "بنك صفوة الإسلامي",
+  "steps": {
+    "step1": "المعلومات الشخصية",
+    "step2": "اختيار أنواع الأصول",
+    "step3": "تفاصيل الأصول",
+    "step4": "الالتزامات المالية",
+    "step5": "ملخص الزكاة"
+  },
+  "buttons": {
+    "next": "التالي",
+    "back": "رجوع",
+    "calculate": "حساب الزكاة"
+  },
+  "personalInfo": {
+    "title": "المعلومات الشخصية",
+    "subtitle": "يرجى تعبئة بياناتك الشخصية للمتابعة.",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "nationalId": "الرقم الوطني",
+    "accountNumber": "رقم الحساب",
+    "phoneNumber": "رقم الهاتف",
+    "email": "البريد الإلكتروني",
+    "hawlConfirm": "أؤكد أن حولاً قمرياً كاملاً قد مر على أموالي."
+  },
+  "assetSelection": {
+    "title": "اختيار أنواع الأصول",
+    "subtitle": "اختر جميع الأصول الزكوية التي تمتلكها.",
+    "cash": "النقد والأرصدة البنكية",
+    "gold": "الذهب",
+    "silver": "الفضة",
+    "stocks": "الأسهم",
+    "investmentFunds": "الصناديق الاستثمارية",
+    "businessAssets": "أصول التجارة",
+    "moneyOwed": "الأموال المستحقة لي"
+  },
+  "assetDetails": {
+    "title": "تفاصيل الأصول",
+    "subtitle": "أدخل القيمة الحالية لكل أصل من أصولك المحددة.",
+    "cashSection": "النقد والأرصدة البنكية",
+    "goldSection": "الذهب",
+    "silverSection": "الفضة",
+    "stocksSection": "الأسهم",
+    "investmentFundsSection": "الصناديق الاستثمارية",
+    "businessAssetsSection": "أصول التجارة",
+    "moneyOwedSection": "الأموال المستحقة لي",
+    "cashInHand": "النقد المتوفر",
+    "savingsBalance": "رصيد حساب التوفير",
+    "checkingBalance": "رصيد الحساب الجاري",
+    "goldWeight": "وزن الذهب (غرام)",
+    "silverWeight": "وزن الفضة (غرام)",
+    "stocksValue": "القيمة الإجمالية للأسهم",
+    "fundsValue": "القيمة الإجمالية للصناديق الاستثمارية",
+    "businessInventory": "قيمة البضائع التجارية",
+    "businessCash": "النقد في النشاط التجاري",
+    "amountOwed": "الأموال المستحقة من الآخرين",
+    "currency": "د.أ"
+  },
+  "liabilities": {
+    "title": "الالتزامات المالية",
+    "subtitle": "أدخل جميع الالتزامات المالية المستحقة.",
+    "personalLoans": "القروض الشخصية",
+    "creditCard": "ديون بطاقات الائتمان",
+    "mortgagePayments": "دفعات الرهن العقاري المستحقة هذا العام",
+    "carLoan": "دفعات قرض السيارة المستحقة هذا العام",
+    "otherDebts": "ديون أخرى",
+    "currency": "د.أ"
+  },
+  "summary": {
+    "title": "ملخص الزكاة",
+    "subtitle": "راجع ملخص حساب الزكاة الخاص بك أدناه.",
+    "summarySection": "الملخص",
+    "totalAssets": "إجمالي الأصول",
+    "totalLiabilities": "إجمالي الالتزامات",
+    "netWealth": "صافي المال الخاضع للزكاة",
+    "nisabSection": "مؤشر النصاب",
+    "nisabMessage": "أموالك تجاوزت نصاب الزكاة.",
+    "zakatSection": "الزكاة المستحقة",
+    "zakatDue": "الزكاة المستحقة",
+    "placeholder": "---",
+    "currency": "د.أ"
+  },
+  "backToBank": "العودة إلى بنك صفوة",
+  "language": {
+    "en": "English",
+    "ar": "العربية"
+  },
+  "validation": {
+    "firstNameRequired": "يجب أن يكون الاسم الأول حرفين على الأقل.",
+    "lastNameRequired": "يجب أن يكون اسم العائلة حرفين على الأقل.",
+    "nationalIdInvalid": "يجب أن يتكون الرقم الوطني من 10 أرقام بالضبط.",
+    "accountNumberRequired": "رقم الحساب مطلوب.",
+    "phoneInvalid": "أدخل رقم هاتف أردني صحيح (07XXXXXXXX).",
+    "emailInvalid": "أدخل بريدًا إلكترونيًا صحيحًا.",
+    "hawlRequired": "يجب تأكيد مرور الحول الكامل على أموالك.",
+    "assetSelectionRequired": "يرجى اختيار نوع أصل واحد على الأقل."
+  },
+  "prices": {
+    "liveTitle": "أسعار المعادن اللحظية",
+    "goldLabel": "الذهب",
+    "silverLabel": "الفضة",
+    "perGram": "د.أ / غرام",
+    "lastUpdated": "آخر تحديث",
+    "loading": "جارٍ تحميل الأسعار اللحظية…",
+    "error": "تعذّر تحميل الأسعار اللحظية. قد تتأثر دقة النتائج.",
+    "usingCache": "يتم استخدام الأسعار المحفوظة مؤقتًا.",
+    "usingFallbackRate": "يتم استخدام سعر صرف تقديري (0.709 دولار/د.أ).",
+    "estimatedValue": "القيمة التقديرية"
+  },
+  "nisabSelector": {
+    "title": "معيار النصاب",
+    "description": "يُحسب نصاب الزكاة بامتلاك ما يعادل 85 جراماً من الذهب الخالص (عيار 24) أو 595 جراماً من الفضة.",
+    "silverLabel": "الفضة (المعيار الأدنى)",
+    "silverDesc": "595 جراماً من الفضة",
+    "goldLabel": "الذهب",
+    "goldDesc": "85 جراماً من الذهب الخالص (عيار 24)",
+    "selectedSilver": "الفضة",
+    "selectedGold": "الذهب"
+  },
+  "results": {
+    "totalAssets": "إجمالي الأصول",
+    "totalLiabilities": "إجمالي الالتزامات",
+    "netWealth": "صافي المال الخاضع للزكاة",
+    "nisabThreshold": "نصاب الزكاة",
+    "nisabStandard": "معيار النصاب",
+    "zakatDue": "الزكاة المستحقة (2.5%)",
+    "zakatRequired": "أموالك تجاوزت نصاب الزكاة. الزكاة واجبة عليك.",
+    "zakatNotRequired": "أموالك أقل من نصاب الزكاة. لا تجب عليك الزكاة.",
+    "goldPriceUsed": "سعر الذهب المستخدم",
+    "silverPriceUsed": "سعر الفضة المستخدم",
+    "currency": "د.أ",
+    "noResult": "اضغط على «حساب الزكاة» لعرض النتائج."
+  }
+}
