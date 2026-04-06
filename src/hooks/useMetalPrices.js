@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { calcPricePerGram } from '../utils/zakatCalculator';
 
 const FALLBACK_USD_TO_JOD = 0.709;
-const CACHE_KEY = 'safwa_metal_prices_v1';
+const CACHE_KEY = 'safwa_metal_prices_v2';
 const CACHE_TTL_MS = 30 * 60 * 1000;
 
 function loadCache() {
@@ -28,6 +28,7 @@ export function useMetalPrices() {
     usdToJod: null,
     goldJodPerGram: null,
     silverJodPerGram: null,
+    fxRates: null,
     lastUpdated: null,
     loading: true,
     error: null,
@@ -52,10 +53,12 @@ export function useMetalPrices() {
 
         const goldUsd = goldRes.status === 'fulfilled' ? Number(goldRes.value?.price) : null;
         const silverUsd = silverRes.status === 'fulfilled' ? Number(silverRes.value?.price) : null;
-        const usdToJod = fxRes.status === 'fulfilled' ? Number(fxRes.value?.rates?.JOD) : null;
+        const rawRates = fxRes.status === 'fulfilled' ? fxRes.value?.rates : null;
+        const usdToJod = rawRates ? Number(rawRates.JOD) : null;
 
         const usingFallbackRate = !usdToJod || isNaN(usdToJod);
         const effectiveRate = usingFallbackRate ? FALLBACK_USD_TO_JOD : usdToJod;
+        const fxRates = rawRates || { USD: 1, JOD: FALLBACK_USD_TO_JOD };
 
         if (goldUsd && silverUsd && !isNaN(goldUsd) && !isNaN(silverUsd)) {
           const goldJodPerGram = calcPricePerGram(goldUsd, effectiveRate);
@@ -66,6 +69,7 @@ export function useMetalPrices() {
             usdToJod: effectiveRate,
             goldJodPerGram,
             silverJodPerGram,
+            fxRates,
             lastUpdated: new Date().toISOString(),
             loading: false,
             error: null,

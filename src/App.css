@@ -850,98 +850,68 @@ body {
 .nisab-verdict--not-met svg { color: #d97706; }
 
 /* ============================================================
-   NISAB STANDARD SELECTOR
+   NISAB STANDARD INFO BANNER
    ============================================================ */
-.nisab-selector {
+.nisab-info-banner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
   margin-bottom: 24px;
-  border: 1px solid var(--border);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  background: #fff;
-}
-
-.nisab-selector-header {
-  padding: 11px 20px;
   background: var(--green-lighter);
-  border-bottom: 1px solid var(--border);
+  border: 1px solid rgba(63, 145, 79, 0.25);
   border-inline-start: 3px solid var(--green);
+  border-radius: var(--r-lg);
 }
 
-.nisab-selector-title {
+.nisab-info-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(63, 145, 79, 0.12);
+  border: 1px solid rgba(63, 145, 79, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--green-dark);
+}
+
+.nisab-info-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.nisab-info-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.nisab-info-label {
   font-size: 13px;
   font-weight: 700;
   color: var(--green-dark);
 }
 
-.nisab-selector-desc {
-  padding: 12px 20px;
-  font-size: 12.5px;
+.nisab-info-desc {
+  font-size: 12px;
   color: var(--text-secondary);
-  line-height: 1.6;
-  border-bottom: 1px solid var(--border);
+  line-height: 1.5;
 }
 
-.nisab-options {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-}
-
-.nisab-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
-  cursor: pointer;
-  border-inline-end: 1px solid var(--border);
-  transition: background var(--ease);
-}
-
-.nisab-option:last-child { border-inline-end: none; }
-
-.nisab-option:hover { background: var(--green-lighter); }
-
-.nisab-option--selected {
-  background: var(--green-lighter);
-}
-
-.nisab-option-input { display: none; }
-
-.nisab-option-radio {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 2px solid var(--border-strong);
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: border-color var(--ease), background var(--ease);
-}
-
-.nisab-option--selected .nisab-option-radio {
-  border-color: var(--green);
+.nisab-info-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 20px;
   background: var(--green);
-  box-shadow: inset 0 0 0 3px #fff;
-}
-
-.nisab-option-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.nisab-option-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-body);
-}
-
-.nisab-option--selected .nisab-option-label { color: var(--green-dark); }
-
-.nisab-option-desc {
-  font-size: 11.5px;
-  color: var(--text-muted);
+  color: #fff;
+  flex-shrink: 0;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
 }
 
 /* Nisab standard badge in results */
@@ -958,12 +928,6 @@ body {
   background: var(--green-lighter);
   border-color: rgba(63,145,79,.3);
   color: var(--green-dark);
-}
-
-@media (max-width: 480px) {
-  .nisab-options { grid-template-columns: 1fr; }
-  .nisab-option { border-inline-end: none; border-bottom: 1px solid var(--border); }
-  .nisab-option:last-child { border-bottom: none; }
 }
 
 /* ── No-result notice ── */
@@ -1010,6 +974,282 @@ body {
 }
 
 .price-used-item strong { color: var(--green-dark); }
+
+/* ============================================================
+   FOREIGN CURRENCIES — CARD LAYOUT  (fx-cards-wrap, fx-card)
+   ============================================================ */
+.fx-cards-wrap {
+  border-top: 1px dashed rgba(63, 145, 79, 0.3);
+  margin-top: 4px;
+  padding: 14px 20px 20px;
+}
+
+.fx-cards-label {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.fx-cards-label-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.fx-cards-label-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── Individual card ── */
+.fx-card {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  background: var(--bg-card);
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.fx-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px 10px 12px;
+  background: var(--green-lighter);
+  border-bottom: 1px solid var(--border);
+  border-inline-start: 3px solid var(--green);
+}
+
+.fx-card-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--green);
+  opacity: 0.7;
+}
+
+.fx-card-header-icon svg { width: 14px; height: 14px; }
+
+.fx-card-header-title {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-dark);
+}
+
+/* Currency picker inside card body */
+.fx-currency-field {
+  margin-bottom: 16px;
+}
+
+.fx-currency-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-body);
+  margin-bottom: 6px;
+}
+
+.fx-currency-select {
+  width: 100%;
+  height: 44px;
+  padding: 0 40px 0 13px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background-color: var(--bg-input);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 13px center;
+  transition: border-color var(--ease), box-shadow var(--ease);
+}
+
+.fx-currency-select:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: var(--shadow-focus);
+}
+
+.fx-currency-select:hover { border-color: var(--green); }
+
+[dir="rtl"] .fx-currency-select {
+  padding-right: 13px;
+  padding-left: 40px;
+  background-position: left 13px center;
+}
+
+.fx-card-remove {
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(63, 145, 79, 0.25);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--ease), color var(--ease), border-color var(--ease);
+}
+
+.fx-card-remove svg { width: 11px; height: 11px; }
+
+.fx-card-remove:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #ef4444;
+}
+
+.fx-card-body {
+  padding: 12px 16px 14px;
+}
+
+.fx-card-no-rate {
+  margin-top: 4px;
+  font-size: 11.5px;
+  color: #b45309;
+}
+
+/* ============================================================
+   GOLD INPUT MODE TOGGLE
+   ============================================================ */
+.gold-mode-toggle {
+  display: flex;
+  gap: 8px;
+  padding: 14px 20px 0;
+}
+
+.gold-mode-btn {
+  flex: 1;
+  padding: 9px 12px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: background var(--ease), border-color var(--ease), color var(--ease);
+}
+
+.gold-mode-btn--active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+.gold-mode-btn:not(.gold-mode-btn--active):hover {
+  border-color: var(--green);
+  color: var(--green-dark);
+  background: var(--green-lighter);
+}
+
+.gold-mode-toggle--body {
+  padding: 0 0 14px;
+}
+
+.inv-cards-wrap {
+  border-top: 1px dashed rgba(63, 145, 79, 0.3);
+  margin-top: 4px;
+  padding: 14px 20px 20px;
+}
+
+/* Karat selector */
+.gold-karat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px 0;
+}
+
+.gold-karat-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.gold-karat-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.gold-karat-btn {
+  padding: 5px 16px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: background var(--ease), border-color var(--ease), color var(--ease);
+}
+
+.gold-karat-btn--active {
+  background: #b45309;
+  border-color: #b45309;
+  color: #fff;
+}
+
+.gold-karat-btn:not(.gold-karat-btn--active):hover {
+  border-color: #d97706;
+  color: #92400e;
+  background: #fffbeb;
+}
+
+/* ── Add card button ── */
+.fx-add-card-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+  padding: 10px 16px;
+  border: 1.5px dashed rgba(63, 145, 79, 0.45);
+  border-radius: var(--r-lg);
+  background: transparent;
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: background var(--ease), border-color var(--ease), color var(--ease);
+}
+
+.fx-add-card-btn svg { width: 15px; height: 15px; }
+
+.fx-add-card-btn:hover {
+  background: var(--green-lighter);
+  border-color: var(--green);
+  color: var(--green-dark);
+}
+
+/* RTL */
+[dir="rtl"] .fx-card-header {
+  border-inline-start: none;
+  border-inline-end: 3px solid var(--green);
+}
+
+[dir="rtl"] .fx-card-select {
+  padding-right: 0;
+  padding-left: 20px;
+  background-position: left 0 center;
+}
 
 /* Nisab indicator */
 .nisab-card .nisab-indicator {

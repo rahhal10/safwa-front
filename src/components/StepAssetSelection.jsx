@@ -2,7 +2,7 @@ import { useLanguage } from '../i18n/LanguageContext';
 import StepNavigation from './ui/StepNavigation';
 
 const ASSET_KEYS = [
-  'cash', 'gold', 'silver', 'stocks', 'investmentFunds', 'businessAssets', 'moneyOwed',
+  'cash', 'gold', 'silver', 'investments', 'businessAssets', 'moneyOwed',
 ];
 
 export default function StepAssetSelection({ selected, onChange, onBack, onNext, errors = {} }) {

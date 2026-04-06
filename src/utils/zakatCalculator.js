@@ -1,5 +1,4 @@
 export const GRAMS_PER_OUNCE = 31.1035;
-export const NISAB_SILVER_GRAMS = 595;
 export const NISAB_GOLD_GRAMS = 85;
 export const ZAKAT_RATE = 0.025;
 
@@ -8,29 +7,44 @@ export function calcPricePerGram(usdPerOunce, usdToJod) {
   return (usdPerOunce / GRAMS_PER_OUNCE) * usdToJod;
 }
 
-export function calcNisab(silverPricePerGram) {
-  return NISAB_SILVER_GRAMS * silverPricePerGram;
-}
-
-export function calcNisabByStandard(standard, goldPricePerGram, silverPricePerGram) {
-  if (standard === 'gold') return NISAB_GOLD_GRAMS * goldPricePerGram;
-  return NISAB_SILVER_GRAMS * silverPricePerGram;
-}
-
 const n = (v) => parseFloat(v) || 0;
 
-export function calcTotalAssets({ assetValues, goldPricePerGram, silverPricePerGram }) {
+export function convertFxToJod(entries, fxRates) {
+  if (!entries || !fxRates) return 0;
+  return entries.reduce((sum, entry) => {
+    const total = (parseFloat(entry.cashInHand) || 0) +
+                  (parseFloat(entry.savingsBalance) || 0) +
+                  (parseFloat(entry.checkingBalance) || 0);
+    if (!total || !entry.currency) return sum;
+    const jodRate = fxRates['JOD'];
+    const currRate = fxRates[entry.currency];
+    if (!jodRate || !currRate) return sum;
+    return sum + total * (jodRate / currRate);
+  }, 0);
+}
+
+export function calcTotalAssets({ assetValues, goldPricePerGram, silverPricePerGram, fxRates }) {
+  const foreignCashJod = convertFxToJod(assetValues.foreignCurrencies, fxRates);
+  const karatMultiplier = { '24k': 1, '21k': 21 / 24, '18k': 18 / 24 }[assetValues.goldKarat || '24k'] || 1;
+  const goldJod = assetValues.goldInputMode === 'value'
+    ? n(assetValues.goldValue)
+    : n(assetValues.goldWeight) * goldPricePerGram * karatMultiplier;
   return (
     n(assetValues.cashInHand) +
     n(assetValues.savingsBalance) +
     n(assetValues.checkingBalance) +
-    n(assetValues.goldWeight) * goldPricePerGram +
-    n(assetValues.silverWeight) * silverPricePerGram +
-    n(assetValues.stocksValue) +
-    n(assetValues.fundsValue) +
+    foreignCashJod +
+    goldJod +
+    (assetValues.silverInputMode === 'value' ? n(assetValues.silverValue) : n(assetValues.silverWeight) * silverPricePerGram) +
+    (assetValues.investments || []).reduce((sum, inv) => {
+      if (inv.intention === 'trading') return sum + n(inv.marketValue);
+      return sum + n(inv.profits) + n(inv.cashShare) + n(inv.receivables);
+    }, 0) +
     n(assetValues.businessInventory) +
     n(assetValues.businessCash) +
-    n(assetValues.amountOwed)
+    n(assetValues.businessReceivables) +
+    n(assetValues.loansGiven) +
+    n(assetValues.expectedPayments)
   );
 }
 
@@ -44,15 +58,15 @@ export function calcTotalLiabilities(liabilities) {
   );
 }
 
-export function calcZakat({ assetValues, liabilities, goldPricePerGram, silverPricePerGram, nisabStandard = 'silver' }) {
-  const totalAssets = calcTotalAssets({ assetValues, goldPricePerGram, silverPricePerGram });
+export function calcZakat({ assetValues, liabilities, goldPricePerGram, silverPricePerGram, fxRates }) {
+  const totalAssets = calcTotalAssets({ assetValues, goldPricePerGram, silverPricePerGram, fxRates });
   const totalLiabilities = calcTotalLiabilities(liabilities);
   const netWealth = Math.max(0, totalAssets - totalLiabilities);
-  const nisabValue = calcNisabByStandard(nisabStandard, goldPricePerGram, silverPricePerGram);
+  const nisabValue = NISAB_GOLD_GRAMS * goldPricePerGram;
   const zakatRequired = nisabValue > 0 && netWealth >= nisabValue;
   const zakatDue = zakatRequired ? netWealth * ZAKAT_RATE : 0;
 
-  return { totalAssets, totalLiabilities, netWealth, nisabValue, nisabStandard, zakatRequired, zakatDue };
+  return { totalAssets, totalLiabilities, netWealth, nisabValue, nisabStandard: 'gold', zakatRequired, zakatDue };
 }
 
 export function fmt(value) {

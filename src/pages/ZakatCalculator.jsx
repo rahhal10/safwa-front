@@ -24,7 +24,6 @@ export default function ZakatCalculator() {
   const [liabilities, setLiabilities] = useState({});
   const [validationErrors, setValidationErrors] = useState({});
   const [calcResult, setCalcResult] = useState(null);
-  const [nisabStandard, setNisabStandard] = useState('silver');
   const [saveStatus, setSaveStatus] = useState(null);   // null | 'saving' | 'saved' | 'error'
   const [saveMessage, setSaveMessage] = useState('');
 
@@ -46,14 +45,13 @@ export default function ZakatCalculator() {
     setCurrentStep((s) => Math.min(s + 1, TOTAL_STEPS));
   };
 
-  const handleCalculate = async (standardArg) => {
-    const standard = typeof standardArg === 'string' ? standardArg : nisabStandard;
+  const handleCalculate = async () => {
     const result = calcZakat({
       assetValues: assetDetails,
       liabilities,
       goldPricePerGram: metalPrices.goldJodPerGram || 0,
       silverPricePerGram: metalPrices.silverJodPerGram || 0,
-      nisabStandard: standard,
+      fxRates: metalPrices.fxRates || null,
     });
     setCalcResult(result);
 
@@ -63,7 +61,7 @@ export default function ZakatCalculator() {
     try {
       const payload = buildPayload({
         personalInfo, selectedAssets, assetDetails,
-        liabilities, nisabStandard: standard, metalPrices,
+        liabilities, metalPrices,
       });
       const res = await fetch('/api/users', {
         method:  'POST',
@@ -82,11 +80,6 @@ export default function ZakatCalculator() {
       setSaveStatus('error');
       setSaveMessage(err?.message || 'Could not reach the server. Is the backend running?');
     }
-  };
-
-  const handleNisabChange = (standard) => {
-    setNisabStandard(standard);
-    if (calcResult) handleCalculate(standard);
   };
 
   const STEP_LABELS = [
@@ -203,8 +196,6 @@ export default function ZakatCalculator() {
               onCalculate={handleCalculate}
               result={calcResult}
               metalPrices={metalPrices}
-              nisabStandard={nisabStandard}
-              onNisabChange={handleNisabChange}
               saveStatus={saveStatus}
               saveMessage={saveMessage}
             />
@@ -222,33 +213,55 @@ export default function ZakatCalculator() {
 // ── Maps all step state into the backend POST /api/users shape ───────────────
 function n(v) { return parseFloat(v) || 0; }
 
-function buildPayload({ personalInfo, selectedAssets, assetDetails, liabilities, nisabStandard, metalPrices }) {
+function buildPayload({ personalInfo, selectedAssets, assetDetails, liabilities, metalPrices }) {
   const assets = [];
 
   if (selectedAssets.includes('cash')) {
-    assets.push({ category: 'cash', amount: n(assetDetails.cashInHand) + n(assetDetails.savingsBalance) + n(assetDetails.checkingBalance) });
+    const fxRates = metalPrices.fxRates || null;
+    const foreignTotal = (assetDetails.foreignCurrencies || []).reduce((sum, e) => {
+      const total = (parseFloat(e.cashInHand) || 0) +
+                    (parseFloat(e.savingsBalance) || 0) +
+                    (parseFloat(e.checkingBalance) || 0);
+      if (!total || !e.currency || !fxRates) return sum;
+      const jodRate = fxRates['JOD'];
+      const currRate = fxRates[e.currency];
+      if (!jodRate || !currRate) return sum;
+      return sum + total * (jodRate / currRate);
+    }, 0);
+    assets.push({ category: 'cash', amount: n(assetDetails.cashInHand) + n(assetDetails.savingsBalance) + n(assetDetails.checkingBalance) + foreignTotal });
   }
   if (selectedAssets.includes('gold')) {
-    const grams = n(assetDetails.goldWeight);
-    const price = metalPrices.goldJodPerGram || 0;
-    assets.push({ category: 'gold', amount: price > 0 ? grams * price : grams, notes: `${grams}g` });
+    if (assetDetails.goldInputMode === 'value') {
+      assets.push({ category: 'gold', amount: n(assetDetails.goldValue) });
+    } else {
+      const grams = n(assetDetails.goldWeight);
+      const price = metalPrices.goldJodPerGram || 0;
+      const karat = assetDetails.goldKarat || '24k';
+      const karatMult = { '24k': 1, '21k': 21 / 24, '18k': 18 / 24 }[karat] || 1;
+      assets.push({ category: 'gold', amount: price > 0 ? grams * price * karatMult : grams, notes: `${grams}g ${karat}` });
+    }
   }
   if (selectedAssets.includes('silver')) {
-    const grams = n(assetDetails.silverWeight);
-    const price = metalPrices.silverJodPerGram || 0;
-    assets.push({ category: 'silver', amount: price > 0 ? grams * price : grams, notes: `${grams}g` });
+    if (assetDetails.silverInputMode === 'value') {
+      assets.push({ category: 'silver', amount: n(assetDetails.silverValue) });
+    } else {
+      const grams = n(assetDetails.silverWeight);
+      const price = metalPrices.silverJodPerGram || 0;
+      assets.push({ category: 'silver', amount: price > 0 ? grams * price : grams, notes: `${grams}g` });
+    }
   }
-  if (selectedAssets.includes('stocks')) {
-    assets.push({ category: 'stocks', amount: n(assetDetails.stocksValue) });
-  }
-  if (selectedAssets.includes('investmentFunds')) {
-    assets.push({ category: 'investment_funds', amount: n(assetDetails.fundsValue) });
+  if (selectedAssets.includes('investments')) {
+    const total = (assetDetails.investments || []).reduce((sum, inv) => {
+      if (inv.intention === 'trading') return sum + n(inv.marketValue);
+      return sum + n(inv.profits) + n(inv.cashShare) + n(inv.receivables);
+    }, 0);
+    if (total > 0) assets.push({ category: 'investments', amount: total });
   }
   if (selectedAssets.includes('businessAssets')) {
-    assets.push({ category: 'business', amount: n(assetDetails.businessInventory) + n(assetDetails.businessCash) });
+    assets.push({ category: 'business', amount: n(assetDetails.businessInventory) + n(assetDetails.businessCash) + n(assetDetails.businessReceivables) });
   }
   if (selectedAssets.includes('moneyOwed')) {
-    assets.push({ category: 'money_owed', amount: n(assetDetails.amountOwed) });
+    assets.push({ category: 'money_owed', amount: n(assetDetails.loansGiven) + n(assetDetails.expectedPayments) });
   }
   if (assets.length === 0) assets.push({ category: 'cash', amount: 0 });
 
@@ -265,7 +278,7 @@ function buildPayload({ personalInfo, selectedAssets, assetDetails, liabilities,
   return {
     phone_number:   (personalInfo.phoneNumber   || '').trim(),
     account_number: (personalInfo.accountNumber || '').trim(),
-    nisab_standard: nisabStandard || 'silver',
+    nisab_standard: 'gold',
     assets,
     liabilities: liabilitiesArr,
   };

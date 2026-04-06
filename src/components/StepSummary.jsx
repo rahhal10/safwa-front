@@ -16,7 +16,7 @@ function ResultRow({ label, value, currency, highlight, dim }) {
   );
 }
 
-export default function StepSummary({ onBack, onCalculate, result, metalPrices = {}, nisabStandard = 'silver', onNisabChange, saveStatus = null, saveMessage = '' }) {
+export default function StepSummary({ onBack, onCalculate, result, metalPrices = {}, saveStatus = null, saveMessage = '' }) {
   const { t } = useLanguage();
   const cur = t('results.currency');
   const hasResult = result !== null && result !== undefined;
@@ -28,45 +28,20 @@ export default function StepSummary({ onBack, onCalculate, result, metalPrices =
         <p className="step-subtitle">{t('summary.subtitle')}</p>
       </div>
 
-      {/* ── Nisab Standard Selector ── */}
-      <div className="nisab-selector">
-        <div className="nisab-selector-header">
-          <h3 className="nisab-selector-title">{t('nisabSelector.title')}</h3>
+      {/* ── Nisab Standard (Gold) ── */}
+      <div className="nisab-info-banner">
+        <div className="nisab-info-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M9.5 9.5C9.5 8.12 10.62 7 12 7s2.5 1.12 2.5 2.5c0 1.5-1.5 2-2 3" />
+            <circle cx="12" cy="16.5" r=".5" fill="currentColor" stroke="none" />
+          </svg>
         </div>
-        <p className="nisab-selector-desc">{t('nisabSelector.description')}</p>
-        <div className="nisab-options">
-          <label className={`nisab-option${nisabStandard === 'silver' ? ' nisab-option--selected' : ''}`}>
-            <input
-              type="radio"
-              name="nisabStandard"
-              value="silver"
-              checked={nisabStandard === 'silver'}
-              onChange={() => onNisabChange('silver')}
-              className="nisab-option-input"
-            />
-            <span className="nisab-option-radio" />
-            <span className="nisab-option-content">
-              <span className="nisab-option-label">{t('nisabSelector.silverLabel')}</span>
-              <span className="nisab-option-desc">{t('nisabSelector.silverDesc')}</span>
-            </span>
-          </label>
-
-          <label className={`nisab-option${nisabStandard === 'gold' ? ' nisab-option--selected' : ''}`}>
-            <input
-              type="radio"
-              name="nisabStandard"
-              value="gold"
-              checked={nisabStandard === 'gold'}
-              onChange={() => onNisabChange('gold')}
-              className="nisab-option-input"
-            />
-            <span className="nisab-option-radio" />
-            <span className="nisab-option-content">
-              <span className="nisab-option-label">{t('nisabSelector.goldLabel')}</span>
-              <span className="nisab-option-desc">{t('nisabSelector.goldDesc')}</span>
-            </span>
-          </label>
+        <div className="nisab-info-content">
+          <span className="nisab-info-label">{t('nisabSelector.title')}</span>
+          <span className="nisab-info-desc">{t('nisabSelector.description')}</span>
         </div>
+        <span className="nisab-info-badge">{t('nisabSelector.goldLabel')}</span>
       </div>
 
       {!hasResult && (
@@ -96,7 +71,7 @@ export default function StepSummary({ onBack, onCalculate, result, metalPrices =
             <div className="summary-row">
               <span className="summary-label">{t('results.nisabStandard')}</span>
               <span className="nisab-standard-badge nisab-standard-badge--active">
-                {nisabStandard === 'gold' ? t('nisabSelector.selectedGold') : t('nisabSelector.selectedSilver')}
+                {t('nisabSelector.selectedGold')}
               </span>
             </div>
             <ResultRow label={t('results.nisabThreshold')} value={hasResult ? result.nisabValue : null} currency={cur} />
@@ -132,18 +107,11 @@ export default function StepSummary({ onBack, onCalculate, result, metalPrices =
             </span>
           </div>
 
-          {hasResult && (metalPrices.goldJodPerGram || metalPrices.silverJodPerGram) && (
+          {hasResult && metalPrices.goldJodPerGram && (
             <div className="price-used-row">
-              {metalPrices.goldJodPerGram && (
-                <span className="price-used-item">
-                  {t('results.goldPriceUsed')}: <strong>{fmt(metalPrices.goldJodPerGram)}</strong> {t('prices.perGram')}
-                </span>
-              )}
-              {metalPrices.silverJodPerGram && (
-                <span className="price-used-item">
-                  {t('results.silverPriceUsed')}: <strong>{fmt(metalPrices.silverJodPerGram)}</strong> {t('prices.perGram')}
-                </span>
-              )}
+              <span className="price-used-item">
+                {t('results.goldPriceUsed')}: <strong>{fmt(metalPrices.goldJodPerGram)}</strong> {t('prices.perGram')}
+              </span>
             </div>
           )}
         </div>
