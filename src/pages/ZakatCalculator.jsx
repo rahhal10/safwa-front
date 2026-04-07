@@ -24,8 +24,6 @@ export default function ZakatCalculator() {
   const [liabilities, setLiabilities] = useState({});
   const [validationErrors, setValidationErrors] = useState({});
   const [calcResult, setCalcResult] = useState(null);
-  const [saveStatus, setSaveStatus] = useState(null);   // null | 'saving' | 'saved' | 'error'
-  const [saveMessage, setSaveMessage] = useState('');
 
   const goBack = () => {
     setValidationErrors({});
@@ -55,30 +53,15 @@ export default function ZakatCalculator() {
     });
     setCalcResult(result);
 
-    // ── Save everything to the backend ──────────────────────
-    setSaveStatus('saving');
-    setSaveMessage('');
     try {
-      const payload = buildPayload({
-        personalInfo, selectedAssets, assetDetails,
-        liabilities, metalPrices,
-      });
-      const res = await fetch('/api/users', {
-        method:  'POST',
+      const payload = buildPayload({ personalInfo, selectedAssets, assetDetails, liabilities, metalPrices, result });
+      await fetch('/api/users', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(payload),
+        body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if (data.success) {
-        setSaveStatus('saved');
-        setSaveMessage(`Saved successfully (ID: ${data.user_id})`);
-      } else {
-        setSaveStatus('error');
-        setSaveMessage(data.message || 'Save failed.');
-      }
     } catch (err) {
-      setSaveStatus('error');
-      setSaveMessage(err?.message || 'Could not reach the server. Is the backend running?');
+      console.error('Save failed:', err.message);
     }
   };
 
@@ -196,8 +179,6 @@ export default function ZakatCalculator() {
               onCalculate={handleCalculate}
               result={calcResult}
               metalPrices={metalPrices}
-              saveStatus={saveStatus}
-              saveMessage={saveMessage}
             />
           )}
         </div>
@@ -210,76 +191,87 @@ export default function ZakatCalculator() {
   );
 }
 
-// ── Maps all step state into the backend POST /api/users shape ───────────────
-function n(v) { return parseFloat(v) || 0; }
-
-function buildPayload({ personalInfo, selectedAssets, assetDetails, liabilities, metalPrices }) {
-  const assets = [];
+function buildPayload({ personalInfo, selectedAssets, assetDetails, liabilities, metalPrices, result }) {
+  const payload = {
+    phone_number:      (personalInfo.phoneNumber   || '').trim(),
+    account_number:    (personalInfo.accountNumber || '').trim() || null,
+    gold_price_jod:    metalPrices.goldJodPerGram   || 0,
+    silver_price_jod:  metalPrices.silverJodPerGram || 0,
+    usd_to_jod:        metalPrices.usdToJod         || 0,
+    total_assets:      result.totalAssets,
+    total_liabilities: result.totalLiabilities,
+    net_wealth:        result.netWealth,
+    nisab_value:       result.nisabValue,
+    zakat_required:    result.zakatRequired,
+    zakat_due:         result.zakatDue,
+  };
 
   if (selectedAssets.includes('cash')) {
-    const fxRates = metalPrices.fxRates || null;
-    const foreignTotal = (assetDetails.foreignCurrencies || []).reduce((sum, e) => {
-      const total = (parseFloat(e.cashInHand) || 0) +
-                    (parseFloat(e.savingsBalance) || 0) +
-                    (parseFloat(e.checkingBalance) || 0);
-      if (!total || !e.currency || !fxRates) return sum;
-      const jodRate = fxRates['JOD'];
-      const currRate = fxRates[e.currency];
-      if (!jodRate || !currRate) return sum;
-      return sum + total * (jodRate / currRate);
-    }, 0);
-    assets.push({ category: 'cash', amount: n(assetDetails.cashInHand) + n(assetDetails.savingsBalance) + n(assetDetails.checkingBalance) + foreignTotal });
+    payload.cash = {
+      cash_in_hand:     parseFloat(assetDetails.cashInHand)     || 0,
+      savings_balance:  parseFloat(assetDetails.savingsBalance)  || 0,
+      checking_balance: parseFloat(assetDetails.checkingBalance) || 0,
+    };
+    if (assetDetails.foreignCurrencies && assetDetails.foreignCurrencies.length > 0) {
+      payload.foreign_currencies = assetDetails.foreignCurrencies.map((fc) => ({
+        currency:         fc.currency,
+        cash_in_hand:     parseFloat(fc.cashInHand)     || 0,
+        savings_balance:  parseFloat(fc.savingsBalance)  || 0,
+        checking_balance: parseFloat(fc.checkingBalance) || 0,
+      }));
+    }
   }
+
   if (selectedAssets.includes('gold')) {
-    if (assetDetails.goldInputMode === 'value') {
-      assets.push({ category: 'gold', amount: n(assetDetails.goldValue) });
-    } else {
-      const grams = n(assetDetails.goldWeight);
-      const price = metalPrices.goldJodPerGram || 0;
-      const karat = assetDetails.goldKarat || '24k';
-      const karatMult = { '24k': 1, '21k': 21 / 24, '18k': 18 / 24 }[karat] || 1;
-      assets.push({ category: 'gold', amount: price > 0 ? grams * price * karatMult : grams, notes: `${grams}g ${karat}` });
-    }
+    payload.gold = {
+      input_mode:   assetDetails.goldInputMode || 'weight',
+      weight_grams: parseFloat(assetDetails.goldWeight) || null,
+      karat:        assetDetails.goldKarat || '24k',
+      direct_value: parseFloat(assetDetails.goldValue)  || null,
+    };
   }
+
   if (selectedAssets.includes('silver')) {
-    if (assetDetails.silverInputMode === 'value') {
-      assets.push({ category: 'silver', amount: n(assetDetails.silverValue) });
-    } else {
-      const grams = n(assetDetails.silverWeight);
-      const price = metalPrices.silverJodPerGram || 0;
-      assets.push({ category: 'silver', amount: price > 0 ? grams * price : grams, notes: `${grams}g` });
-    }
+    payload.silver = {
+      input_mode:   assetDetails.silverInputMode || 'weight',
+      weight_grams: parseFloat(assetDetails.silverWeight) || null,
+      direct_value: parseFloat(assetDetails.silverValue)  || null,
+    };
   }
-  if (selectedAssets.includes('investments')) {
-    const total = (assetDetails.investments || []).reduce((sum, inv) => {
-      if (inv.intention === 'trading') return sum + n(inv.marketValue);
-      return sum + n(inv.profits) + n(inv.cashShare) + n(inv.receivables);
-    }, 0);
-    if (total > 0) assets.push({ category: 'investments', amount: total });
+
+  if (selectedAssets.includes('investments') && assetDetails.investments && assetDetails.investments.length > 0) {
+    payload.investments = assetDetails.investments.map((inv) => ({
+      type:         inv.type,
+      intention:    inv.intention,
+      market_value: parseFloat(inv.marketValue) || null,
+      profits:      parseFloat(inv.profits)     || null,
+      cash_share:   parseFloat(inv.cashShare)   || null,
+      receivables:  parseFloat(inv.receivables) || null,
+    }));
   }
+
   if (selectedAssets.includes('businessAssets')) {
-    assets.push({ category: 'business', amount: n(assetDetails.businessInventory) + n(assetDetails.businessCash) + n(assetDetails.businessReceivables) });
+    payload.business_assets = {
+      inventory:   parseFloat(assetDetails.businessInventory)   || 0,
+      cash:        parseFloat(assetDetails.businessCash)         || 0,
+      receivables: parseFloat(assetDetails.businessReceivables)  || 0,
+    };
   }
+
   if (selectedAssets.includes('moneyOwed')) {
-    assets.push({ category: 'money_owed', amount: n(assetDetails.loansGiven) + n(assetDetails.expectedPayments) });
+    payload.money_owed = {
+      loans_given:       parseFloat(assetDetails.loansGiven)       || 0,
+      expected_payments: parseFloat(assetDetails.expectedPayments) || 0,
+    };
   }
-  if (assets.length === 0) assets.push({ category: 'cash', amount: 0 });
 
-  const liabilitiesArr = [
-    { field: 'personalLoans',    category: 'personal_loan', due: true  },
-    { field: 'creditCard',       category: 'credit_card',   due: true  },
-    { field: 'mortgagePayments', category: 'mortgage',      due: false },
-    { field: 'carLoan',          category: 'car_loan',      due: false },
-    { field: 'otherDebts',       category: 'other',         due: false },
-  ]
-    .filter(({ field }) => n(liabilities[field]) > 0)
-    .map(({ field, category, due }) => ({ category, amount: n(liabilities[field]), due_within_12_months: due }));
-
-  return {
-    phone_number:   (personalInfo.phoneNumber   || '').trim(),
-    account_number: (personalInfo.accountNumber || '').trim(),
-    nisab_standard: 'gold',
-    assets,
-    liabilities: liabilitiesArr,
+  payload.liabilities = {
+    personal_loans:    parseFloat(liabilities.personalLoans)    || 0,
+    credit_card:       parseFloat(liabilities.creditCard)        || 0,
+    mortgage_payments: parseFloat(liabilities.mortgagePayments)  || 0,
+    car_loan:          parseFloat(liabilities.carLoan)           || 0,
+    other_debts:       parseFloat(liabilities.otherDebts)        || 0,
   };
+
+  return payload;
 }

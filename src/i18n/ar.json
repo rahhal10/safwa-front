@@ -16,13 +16,8 @@
   "personalInfo": {
     "title": "المعلومات الشخصية",
     "subtitle": "يرجى تعبئة بياناتك الشخصية للمتابعة.",
-    "firstName": "الاسم الأول",
-    "lastName": "اسم العائلة",
-    "nationalId": "الرقم الوطني",
     "accountNumber": "رقم الحساب",
-    "phoneNumber": "رقم الهاتف",
-    "email": "البريد الإلكتروني",
-    "hawlConfirm": "أؤكد أن حولاً قمرياً كاملاً قد مر على أموالي."
+    "phoneNumber": "رقم الهاتف"
   },
   "assetSelection": {
     "title": "اختيار أنواع الأصول",
@@ -72,11 +67,9 @@
     "businessReceivables": "الذمم المدينة (مبالغ مستحقة لك)",
     "loansGiven": "أموال أقرضتها للآخرين",
     "expectedPayments": "مدفوعات متوقعة مستحقة لك",
-    "currency": "د.أ",
     "foreignCurrenciesLabel": "العملات الأجنبية",
     "foreignCurrenciesHint": "يتم تحويل المبالغ تلقائياً إلى الدينار الأردني باستخدام أسعار الصرف اللحظية",
     "foreignCurrencySelect": "العملة",
-    "foreignCurrencyAmount": "المبلغ",
     "addForeignCurrency": "إضافة عملة أجنبية",
     "foreignCurrencyRateUnavailable": "سعر الصرف غير متاح — لم يُدرج المبلغ في الإجمالي"
   },
@@ -87,40 +80,21 @@
     "creditCard": "ديون بطاقات الائتمان",
     "mortgagePayments": "دفعات الرهن العقاري المستحقة هذا العام",
     "carLoan": "دفعات قرض السيارة المستحقة هذا العام",
-    "otherDebts": "ديون أخرى",
-    "currency": "د.أ"
+    "otherDebts": "ديون أخرى"
   },
   "summary": {
     "title": "ملخص الزكاة",
     "subtitle": "راجع ملخص حساب الزكاة الخاص بك أدناه.",
     "summarySection": "الملخص",
-    "totalAssets": "إجمالي الأصول",
-    "totalLiabilities": "إجمالي الالتزامات",
-    "netWealth": "صافي المال الخاضع للزكاة",
     "nisabSection": "مؤشر النصاب",
-    "nisabMessage": "أموالك تجاوزت نصاب الزكاة.",
-    "zakatSection": "الزكاة المستحقة",
-    "zakatDue": "الزكاة المستحقة",
-    "placeholder": "---",
-    "currency": "د.أ"
+    "zakatSection": "الزكاة المستحقة"
   },
   "backToBank": "العودة إلى بنك صفوة",
-  "language": {
-    "en": "English",
-    "ar": "العربية"
-  },
   "validation": {
-    "firstNameRequired": "يجب أن يكون الاسم الأول حرفين على الأقل.",
-    "lastNameRequired": "يجب أن يكون اسم العائلة حرفين على الأقل.",
-    "nationalIdInvalid": "يجب أن يتكون الرقم الوطني من 10 أرقام بالضبط.",
-    "accountNumberRequired": "رقم الحساب مطلوب.",
     "phoneInvalid": "أدخل رقم هاتف أردني صحيح (07XXXXXXXX).",
-    "emailInvalid": "أدخل بريدًا إلكترونيًا صحيحًا.",
-    "hawlRequired": "يجب تأكيد مرور الحول الكامل على أموالك.",
     "assetSelectionRequired": "يرجى اختيار نوع أصل واحد على الأقل."
   },
   "prices": {
-    "liveTitle": "أسعار المعادن اللحظية",
     "goldLabel": "الذهب",
     "silverLabel": "الفضة",
     "perGram": "د.أ / غرام",
@@ -135,7 +109,6 @@
     "title": "معيار النصاب",
     "description": "يُحسب نصاب الزكاة بامتلاك ما يعادل 85 جراماً من الذهب الخالص (عيار 24).",
     "goldLabel": "الذهب",
-    "goldDesc": "85 جراماً من الذهب الخالص (عيار 24)",
     "selectedGold": "الذهب"
   },
   "results": {

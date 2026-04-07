@@ -16,13 +16,8 @@
   "personalInfo": {
     "title": "Personal Information",
     "subtitle": "Please fill in your personal details to proceed.",
-    "firstName": "First Name",
-    "lastName": "Last Name",
-    "nationalId": "National ID",
     "accountNumber": "Account Number",
-    "phoneNumber": "Phone Number",
-    "email": "Email",
-    "hawlConfirm": "I confirm that one lunar year (hawl) has passed on my wealth."
+    "phoneNumber": "Phone Number"
   },
   "assetSelection": {
     "title": "Select Asset Categories",
@@ -72,11 +67,9 @@
     "businessReceivables": "Receivables (money owed to you)",
     "loansGiven": "Money lent to others",
     "expectedPayments": "Expected payments owed to you",
-    "currency": "JOD",
     "foreignCurrenciesLabel": "Foreign Currencies",
     "foreignCurrenciesHint": "Amounts are automatically converted to JOD using live rates",
     "foreignCurrencySelect": "Currency",
-    "foreignCurrencyAmount": "Amount",
     "addForeignCurrency": "Add Foreign Currency",
     "foreignCurrencyRateUnavailable": "Exchange rate unavailable — value not included in total"
   },
@@ -87,40 +80,21 @@
     "creditCard": "Credit card balances",
     "mortgagePayments": "Mortgage payments due this year",
     "carLoan": "Car loan payments due this year",
-    "otherDebts": "Other debts",
-    "currency": "JOD"
+    "otherDebts": "Other debts"
   },
   "summary": {
     "title": "Zakat Summary",
     "subtitle": "Review your Zakat calculation summary below.",
     "summarySection": "Summary",
-    "totalAssets": "Total Assets",
-    "totalLiabilities": "Total Liabilities",
-    "netWealth": "Net Zakatable Wealth",
     "nisabSection": "Nisab Indicator",
-    "nisabMessage": "Your wealth is above the Nisab threshold.",
-    "zakatSection": "Zakat Due",
-    "zakatDue": "Zakat Due",
-    "placeholder": "---",
-    "currency": "JOD"
+    "zakatSection": "Zakat Due"
   },
   "backToBank": "Back to Safwa Bank",
-  "language": {
-    "en": "English",
-    "ar": "العربية"
-  },
   "validation": {
-    "firstNameRequired": "First name must be at least 2 characters.",
-    "lastNameRequired": "Last name must be at least 2 characters.",
-    "nationalIdInvalid": "National ID must be exactly 10 digits.",
-    "accountNumberRequired": "Account number is required.",
     "phoneInvalid": "Enter a valid Jordanian number (07XXXXXXXX).",
-    "emailInvalid": "Enter a valid email address.",
-    "hawlRequired": "You must confirm that the full lunar year (hawl) has passed.",
     "assetSelectionRequired": "Please select at least one asset category."
   },
   "prices": {
-    "liveTitle": "Live Metal Prices",
     "goldLabel": "Gold",
     "silverLabel": "Silver",
     "perGram": "JOD / gram",
@@ -135,7 +109,6 @@
     "title": "Nisab Standard",
     "description": "Zakat becomes obligatory when your net wealth equals or exceeds the value of 85 grams of pure gold (24K).",
     "goldLabel": "Gold Standard",
-    "goldDesc": "85 grams of pure gold (24K)",
     "selectedGold": "Gold"
   },
   "results": {

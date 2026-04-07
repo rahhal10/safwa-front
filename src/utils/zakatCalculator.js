@@ -9,7 +9,7 @@ export function calcPricePerGram(usdPerOunce, usdToJod) {
 
 const n = (v) => parseFloat(v) || 0;
 
-export function convertFxToJod(entries, fxRates) {
+function convertFxToJod(entries, fxRates) {
   if (!entries || !fxRates) return 0;
   return entries.reduce((sum, entry) => {
     const total = (parseFloat(entry.cashInHand) || 0) +
@@ -23,7 +23,7 @@ export function convertFxToJod(entries, fxRates) {
   }, 0);
 }
 
-export function calcTotalAssets({ assetValues, goldPricePerGram, silverPricePerGram, fxRates }) {
+function calcTotalAssets({ assetValues, goldPricePerGram, silverPricePerGram, fxRates }) {
   const foreignCashJod = convertFxToJod(assetValues.foreignCurrencies, fxRates);
   const karatMultiplier = { '24k': 1, '21k': 21 / 24, '18k': 18 / 24 }[assetValues.goldKarat || '24k'] || 1;
   const goldJod = assetValues.goldInputMode === 'value'
@@ -48,7 +48,7 @@ export function calcTotalAssets({ assetValues, goldPricePerGram, silverPricePerG
   );
 }
 
-export function calcTotalLiabilities(liabilities) {
+function calcTotalLiabilities(liabilities) {
   return (
     n(liabilities.personalLoans) +
     n(liabilities.creditCard) +

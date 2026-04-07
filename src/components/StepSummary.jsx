@@ -16,7 +16,7 @@ function ResultRow({ label, value, currency, highlight, dim }) {
   );
 }
 
-export default function StepSummary({ onBack, onCalculate, result, metalPrices = {}, saveStatus = null, saveMessage = '' }) {
+export default function StepSummary({ onBack, onCalculate, result, metalPrices = {} }) {
   const { t } = useLanguage();
   const cur = t('results.currency');
   const hasResult = result !== null && result !== undefined;
@@ -28,7 +28,6 @@ export default function StepSummary({ onBack, onCalculate, result, metalPrices =
         <p className="step-subtitle">{t('summary.subtitle')}</p>
       </div>
 
-      {/* ── Nisab Standard (Gold) ── */}
       <div className="nisab-info-banner">
         <div className="nisab-info-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
